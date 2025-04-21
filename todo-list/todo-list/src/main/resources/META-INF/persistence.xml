@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
-    <persistence-unit name="ejemplo">
+<persistence version="2.2"
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+    <persistence-unit name="todolistPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>pds.modelo.ToDoList</class>
+        <class>pds.modelo.ToDoListNormal</class>
+        <class>pds.modelo.ToDoListAleatoria</class>
+        <class>pds.modelo.ToDoListFija</class>
+        <class>pds.modelo.ToDoItem</class>
+
         <properties>
-            <property name="jakarta.persistence.jdbc.driver"
-                value="org.sqlite.JDBC" />
+            <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:todolist.db" />
+            <property name="javax.persistence.jdbc.user" value="admin" />
+            <property name="javax.persistence.jdbc.password" value="admin" />
 
-            <!-- La base de datos se guardará en basedatos.db -->
-            <property name="jakarta.persistence.jdbc.url"
-                value="jdbc:sqlite:basedatos.db" />
-            <property name="dialect" value="org.hibernate.community.dialect.SQLiteDialect" />
-
-            <!-- Crear el esquema automáticamente -->
+            <!-- Configuración de Hibernate para SQLite -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
-
-            <!-- Muestra información del SQL que va ejecutando -->
             <property name="hibernate.show_sql" value="true" />
         </properties>
     </persistence-unit>
