@@ -1,47 +1,60 @@
 package pds.todolist.repositorios;
 
-import java.io.File;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
-
 import pds.modelo.ToDoItem;
 import pds.modelo.ToDoList;
-import pds.todolist.db.BaseDatos;
 
-/**
- * Un repositorio de ToDo lists.
- */
 public class RepositorioToDoList {
-
-	private BaseDatos baseDatos;
+	private EntityManagerFactory emf;
+	private EntityManager em;
 
 	public RepositorioToDoList() {
-		this.baseDatos = new BaseDatos(new File("todolist.db"));
+		this.emf = Persistence.createEntityManagerFactory("todolistPU");
+		this.em = emf.createEntityManager();
 	}
-	
+
 	public void add(ToDoList lista) {
-		this.baseDatos.saveToDoList(lista);
+		em.getTransaction().begin();
+		em.persist(lista);
+		em.getTransaction().commit();
 	}
-	
+
 	public void add(ToDoList lista, ToDoItem tarea) {
-		this.baseDatos.saveToDoItem(lista, tarea);
+		em.getTransaction().begin();
+		lista.addItem(tarea);
+		tarea.setLista(lista); // Establece la relación bidireccional
+		em.merge(lista);
+		em.getTransaction().commit();
 	}
 
 	public List<ToDoList> getToDoLists() {
-		return this.baseDatos.getToDoLists();
+		return em.createQuery("SELECT l FROM ToDoList l", ToDoList.class).getResultList();
 	}
 
 	public void remove(ToDoList lista) {
-		this.baseDatos.removeToDoList(lista);
+		em.getTransaction().begin();
+		em.remove(em.merge(lista));
+		em.getTransaction().commit();
 	}
 
 	public void remove(ToDoList actual, ToDoItem item) {
-		this.baseDatos.removeToDoItem(actual, item);
+		em.getTransaction().begin();
+		actual.removeItem(item);
+		em.merge(actual);
+		em.getTransaction().commit();
 	}
 
 	public void update(ToDoList lista, ToDoItem item) {
-		this.baseDatos.saveToDoItem(lista, item);
+		em.getTransaction().begin();
+		em.merge(item);
+		em.getTransaction().commit();
 	}
 
-
-
-}
+	public void close() {
+		em.close();
+		emf.close();
+	}
+}F
