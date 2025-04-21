@@ -17,6 +17,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
+    <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
+    <hibernate.version>6.2.0.Final</hibernate.version>
+    <sqlite.version>3.39.2</sqlite.version>
   </properties>
 
   <dependencies>
@@ -48,7 +51,24 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>2.15.0</version>
+
     </dependency>
+
+    <!-- JPA API -->
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>${jakarta.persistence.version}</version>
+    </dependency>
+
+    <!-- Hibernate Core -->
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+
+    <!-- SQLite JDBC Driver -->
 
     <dependency>
       <groupId>org.xerial</groupId>
@@ -56,6 +76,14 @@
       <version>3.49.1.0</version>
       <scope>runtime</scope>
     </dependency>
+
+    <!-- Para hacer funcionar SQLite con Hibernate -->
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-community-dialects</artifactId>
+      <version>6.2.7.Final</version>
+    </dependency>
+
 
     <dependency>
       <groupId>javax.persistence</groupId>
