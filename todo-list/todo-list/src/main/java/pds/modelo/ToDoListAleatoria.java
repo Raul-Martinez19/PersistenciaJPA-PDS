@@ -5,9 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * Una lista donde las tareas se ordenan de manera aleatoria.
  */
+@Entity
+@DiscriminatorValue("aleatoria")
 public class ToDoListAleatoria extends ToDoList {
 
 	private boolean esContinua;
@@ -16,14 +21,14 @@ public class ToDoListAleatoria extends ToDoList {
 		super(titulo);
 		this.esContinua = esContinua;
 	}
-	
+
 	public boolean isContinua() {
 		return esContinua;
 	}
-	
+
 	@Override
 	public boolean addItem(ToDoItem item) {
-		if (! esContinua) {
+		if (!esContinua) {
 			int posicion = new Random().nextInt(items.size() + 1);
 			items.add(posicion, item);
 			return true;
@@ -31,7 +36,7 @@ public class ToDoListAleatoria extends ToDoList {
 			return super.addItem(item);
 		}
 	}
-	
+
 	@Override
 	public List<ToDoItem> getTareasEnOrden() {
 		if (esContinua) {
