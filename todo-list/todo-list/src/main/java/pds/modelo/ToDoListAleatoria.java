@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * Una lista donde las tareas se ordenan de manera aleatoria.
@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("aleatoria")
 public class ToDoListAleatoria extends ToDoList {
 
-	private boolean esContinua;
+	private final boolean esContinua;
 
 	public ToDoListAleatoria(String titulo, boolean esContinua) {
 		super(titulo);
@@ -40,11 +40,11 @@ public class ToDoListAleatoria extends ToDoList {
 	@Override
 	public List<ToDoItem> getTareasEnOrden() {
 		if (esContinua) {
-			List<ToDoItem> randomized = new ArrayList<ToDoItem>(items);
+			List<ToDoItem> randomized = new ArrayList<>(items);
 			Collections.shuffle(randomized);
 			return randomized;
 		} else {
-			return new ArrayList<ToDoItem>(items);
+			return new ArrayList<>(items);
 		}
 	}
 

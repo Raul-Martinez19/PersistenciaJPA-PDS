@@ -7,20 +7,25 @@ import java.util.TreeSet;
 
 import javax.annotation.CheckForNull;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * Un item de una lista de tareas (ToDo List).
  */
 @Entity
+@Table(name = "todoitem")
 public class ToDoItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +40,10 @@ public class ToDoItem {
 	@ManyToOne
 	@JoinColumn(name = "list_id")
 	private ToDoList lista;
-	private Set<Etiqueta> etiquetas;
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "todoitem_etiqueta", joinColumns = @JoinColumn(name = "todoitem_id"), inverseJoinColumns = @JoinColumn(name = "etiqueta_id"))
+	private Set<Etiqueta> etiquetas = new TreeSet<>();
 
 	// Un item puede tener una fecha de vencimiento
 	@CheckForNull
@@ -51,7 +59,7 @@ public class ToDoItem {
 
 	public ToDoItem(String nombre, Prioridad prioridad, Etiqueta... etiquetas) {
 		this.nombre = nombre;
-		this.etiquetas = new TreeSet<Etiqueta>();
+		this.etiquetas = new TreeSet<>();
 		this.prioridad = prioridad;
 		Collections.addAll(this.etiquetas, etiquetas);
 	}
