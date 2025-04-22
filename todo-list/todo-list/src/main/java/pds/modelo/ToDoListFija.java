@@ -3,14 +3,14 @@ package pds.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("fija")
 public class ToDoListFija extends ToDoList {
 
-	private int numMaximoItems;
+	private final int numMaximoItems;
 
 	public ToDoListFija(String titulo, int numMaximoItems) {
 		super(titulo);

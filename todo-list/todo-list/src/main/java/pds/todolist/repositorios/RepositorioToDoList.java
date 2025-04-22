@@ -1,32 +1,36 @@
 package pds.todolist.repositorios;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import pds.modelo.ToDoItem;
 import pds.modelo.ToDoList;
 
 public class RepositorioToDoList {
-	private EntityManagerFactory emf;
-	private EntityManager em;
-
-	public RepositorioToDoList() {
-		this.emf = Persistence.createEntityManagerFactory("todolistPU");
-		this.em = emf.createEntityManager();
-	}
+	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ejemplo");
+	private EntityManager em = emf.createEntityManager();
 
 	public void add(ToDoList lista) {
-		em.getTransaction().begin();
-		em.persist(lista);
-		em.getTransaction().commit();
+		try {
+			em.getTransaction().begin();
+			em.persist(lista);
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			// Gestión de excepciones, rollback, etc.
+		} finally {
+			// Siempre cerrar el entity manager
+			if (em != null && em.isOpen())
+				em.close();
+		}
 	}
 
 	public void add(ToDoList lista, ToDoItem tarea) {
 		em.getTransaction().begin();
 		lista.addItem(tarea);
-		tarea.setLista(lista); // Establece la relación bidireccional
-		em.merge(lista);
+		tarea.setLista(lista); // Bidireccionalidad
+		em.persist(tarea);
 		em.getTransaction().commit();
 	}
 
@@ -36,7 +40,7 @@ public class RepositorioToDoList {
 
 	public void remove(ToDoList lista) {
 		em.getTransaction().begin();
-		em.remove(em.merge(lista));
+		em.remove(lista);
 		em.getTransaction().commit();
 	}
 
@@ -57,4 +61,8 @@ public class RepositorioToDoList {
 		em.close();
 		emf.close();
 	}
-}F
+
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0"
+    xmlns="https://jakarta.ee/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <persistence-unit name="testPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>pds.modelo.ToDoList</class>
+        <class>pds.modelo.ToDoListNormal</class>
+        <class>pds.modelo.ToDoListAleatoria</class>
+        <class>pds.modelo.ToDoListFija</class>
+        <class>pds.modelo.ToDoItem</class>
+        <class>pds.modelo.Etiqueta</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.sqlite.JDBC" />
+            <property name="jakarta.persistence.jdbc.url"
+                value="jdbc:sqlite:file:testdb?mode=memory&amp;cache=shared" />
+            <property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+        </properties>
+    </persistence-unit>
+</persistence>

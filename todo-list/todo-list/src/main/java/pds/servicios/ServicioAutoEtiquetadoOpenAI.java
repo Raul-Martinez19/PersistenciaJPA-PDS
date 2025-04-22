@@ -22,7 +22,7 @@ public class ServicioAutoEtiquetadoOpenAI implements ServicioAutoEtiquetado {
     
 	@Override
 	public Collection<Etiqueta> etiquetar(ToDoItem item, Etiqueta... etiquetasRelevantes) {
-		List<String> relevantes = Stream.of(etiquetasRelevantes).map(Etiqueta::valor).collect(Collectors.toList());
+        List<String> relevantes = Stream.of(etiquetasRelevantes).map(etiqueta -> etiqueta.toString()).collect(Collectors.toList());
 		
 		List<String> etiquetas = etiquetar(item.getNombre(), relevantes);
 		return etiquetas.stream().map(Etiqueta::new).toList();

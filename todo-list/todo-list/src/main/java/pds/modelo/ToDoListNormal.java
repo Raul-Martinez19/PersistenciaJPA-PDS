@@ -4,14 +4,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * Una lista donde las tareas se ordenan de manera estandar.
  */
 @Entity
-@DiscriminatorValue("ToDoListNormal")
+@DiscriminatorValue("normal") // Valor consistente
 public class ToDoListNormal extends ToDoList {
 
 	public ToDoListNormal(String titulo) {
